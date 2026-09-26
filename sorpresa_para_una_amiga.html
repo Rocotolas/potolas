@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una sorpresa para ti 🌸</title>
+    <style>
+        :root {
+            --sky-color: #87CEEB;
+            --grass-color: #7CFC00; /* Verde pasto vibrante */
+            --stick-color: #333333;
+            --flower-red: #E63946;
+            --bubble-border: #FFB6C1;
+            --bubble-bg: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Mitad superior celeste, mitad inferior verde */
+            background: linear-gradient(to bottom, var(--sky-color) 50%, var(--grass-color) 50%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stick-figure {
+            position: absolute;
+            left: 20%;
+            bottom: 30%;
+            width: 100px;
+            height: 180px;
+        }
+
+        /* La cabeza centrada */
+        .head {
+            position: absolute;
+            top: 0;
+            left: 25px; 
+            width: 40px;
+            height: 40px;
+            border: 5px solid var(--stick-color);
+            border-radius: 50%;
+            background-color: transparent;
+            z-index: 2;
+        }
+
+        /* Torso anclado exactamente debajo de la cabeza */
+        .torso {
+            position: absolute;
+            top: 50px;
+            left: 47.5px;
+            width: 5px;
+            height: 60px;
+            background-color: var(--stick-color);
+            border-radius: 5px;
+        }
+
+        /* Brazos simétricos saliendo de la parte superior del torso */
+        .arm {
+            position: absolute;
+            top: 60px;
+            width: 45px;
+            height: 5px;
+            background-color: var(--stick-color);
+            border-radius: 5px;
+        }
+        .arm.left {
+            left: 5px;
+            transform-origin: right center;
+            transform: rotate(25deg);
+        }
+        .arm.right {
+            left: 50px;
+            transform-origin: left center;
+            transform: rotate(-25deg);
+        }
+
+        /* Piernas simétricas saliendo de la parte inferior del torso */
+        .leg {
+            position: absolute;
+            top: 105px;
+            width: 50px;
+            height: 5px;
+            background-color: var(--stick-color);
+            border-radius: 5px;
+        }
+        .leg.left {
+            left: 0px;
+            transform-origin: right center;
+            transform: rotate(65deg);
+        }
+        .leg.right {
+            left: 50px;
+            transform-origin: left center;
+            transform: rotate(-65deg);
+        }
+
+        .flower-container {
+            position: absolute;
+            top: 35px;
+            left: 80px; /* Sostenida por el brazo derecho */
+            width: 40px;
+            height: 60px;
+            animation: sway 3s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+            z-index: 3;
+        }
+
+        .stem {
+            position: absolute;
+            bottom: 0;
+            left: 18px;
+            width: 4px;
+            height: 45px;
+            background-color: #2E8B57;
+            border-radius: 2px;
+        }
+
+        .leaf {
+            position: absolute;
+            bottom: 20px;
+            left: 22px;
+            width: 15px;
+            height: 8px;
+            background-color: #2E8B57;
+            border-radius: 50% 0 50% 0;
+            transform: rotate(-20deg);
+        }
+
+        .petals {
+            position: absolute;
+            top: 0;
+            left: 5px;
+            width: 30px;
+            height: 30px;
+        }
+
+        .petal {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--flower-red);
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        /* Posicionamiento en cruz de los pétalos */
+        .petal:nth-child(1) { top: 0; left: 7px; }
+        .petal:nth-child(2) { top: 7px; left: 14px; }
+        .petal:nth-child(3) { top: 14px; left: 7px; }
+        .petal:nth-child(4) { top: 7px; left: 0; }
+        
+        .center {
+            position: absolute;
+            top: 9px;
+            left: 9px;
+            width: 12px;
+            height: 12px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .message-box {
+            position: absolute;
+            left: calc(20% + 140px);
+            bottom: 40%;
+            background-color: var(--bubble-bg);
+            border: 4px solid var(--bubble-border);
+            border-radius: 25px;
+            padding: 25px 30px;
+            width: 280px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            animation: float 4s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        /* Triángulo que apunta al muñequito */
+        .message-box::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: -24px;
+            border-width: 12px 24px 12px 0;
+            border-style: solid;
+            border-color: transparent var(--bubble-border) transparent transparent;
+            z-index: 1;
+        }
+        .message-box::after {
+            content: '';
+            position: absolute;
+            bottom: 24px;
+            left: -16px;
+            border-width: 8px 18px 8px 0;
+            border-style: solid;
+            border-color: transparent var(--bubble-bg) transparent transparent;
+            z-index: 2;
+        }
+
+        .message-text {
+            color: #d81b60;
+            font-size: 19px;
+            line-height: 1.4;
+            text-align: center;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            animation: popHeart 2s infinite alternate;
+            user-select: none;
+        }
+        .h1 { top: -20px; left: 10px; transform: rotate(-15deg); animation-delay: 0.2s; }
+        .h2 { bottom: -15px; right: 20px; font-size: 28px; transform: rotate(10deg); animation-delay: 0.7s; }
+        .h3 { top: 20px; right: -25px; font-size: 20px; transform: rotate(25deg); animation-delay: 1.2s; }
+        .h4 { top: -25px; right: 30px; font-size: 22px; transform: rotate(-5deg); animation-delay: 0.5s; }
+
+        /* Nubes de fondo para el cielo celeste */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+        }
+        .c1 { width: 120px; height: 40px; top: 15%; left: 10%; }
+        .c1::before { content:''; position:absolute; top:-20px; left:20px; width:50px; height:50px; background:inherit; border-radius:50%; }
+        .c1::after { content:''; position:absolute; top:-30px; left:55px; width:60px; height:60px; background:inherit; border-radius:50%; }
+
+        .c2 { width: 90px; height: 30px; top: 25%; right: 15%; }
+        .c2::before { content:''; position:absolute; top:-15px; left:15px; width:40px; height:40px; background:inherit; border-radius:50%; }
+        .c2::after { content:''; position:absolute; top:-25px; left:40px; width:50px; height:50px; background:inherit; border-radius:50%; }
+
+        /* Animaciones */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes sway {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(15deg); }
+        }
+
+        @keyframes popHeart {
+            0% { transform: scale(1) translateY(0) rotate(inherit); opacity: 0.8; }
+            100% { transform: scale(1.2) translateY(-10px) rotate(inherit); opacity: 1; }
+        }
+
+        /* Responsividad para celulares */
+        @media (max-width: 700px) {
+            .scene {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .stick-figure {
+                left: auto;
+                bottom: 45%;
+                margin-left: -150px;
+            }
+            .message-box {
+                left: auto;
+                bottom: 20%;
+                width: 250px;
+                margin-left: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nubes en el cielo -->
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+
+    <div class="scene">
+        
+        <!-- Muñequito de palitos simétrico -->
+        <div class="stick-figure">
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+
+            <!-- Flor -->
+            <div class="flower-container">
+                <div class="stem"></div>
+                <div class="leaf"></div>
+                <div class="petals">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="center"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje bonito con corazones flotantes -->
+        <div class="message-box">
+            <div class="heart h1">❤️</div>
+            <div class="heart h2">💖</div>
+            <div class="heart h3">❤️</div>
+            <div class="heart h4">💖</div>
+            
+            <p class="message-text">
+                Para ti: Quería darte una pequeña sorpresa. ¡Espero que tengas un día hermoso!
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html>
