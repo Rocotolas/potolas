@@ -109,6 +109,32 @@
             transform: rotate(-65deg);
         }
 
+        /* Piecitos para que no parezca que está flotando o en puntitas */
+        .leg.left::after {
+            content: '';
+            position: absolute;
+            left: -13px; 
+            top: 0;
+            width: 15px;
+            height: 5px;
+            background-color: var(--stick-color);
+            border-radius: 5px;
+            transform-origin: right center;
+            transform: rotate(-65deg); 
+        }
+        .leg.right::after {
+            content: '';
+            position: absolute;
+            right: -13px; 
+            top: 0;
+            width: 15px;
+            height: 5px;
+            background-color: var(--stick-color);
+            border-radius: 5px;
+            transform-origin: left center;
+            transform: rotate(65deg); 
+        }
+
         .flower-container {
             position: absolute;
             top: 35px;
